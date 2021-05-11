@@ -2,8 +2,10 @@
 
 ## Nastavení aplikace
 Nastavení je k dispozici v souboru `src/settings.js`
-* `endpoint` (string) - základní URL API bez lomítka na konci
-* `updateInterval` (number) - interval v milisekundách, ve kterém je aktualizována data ze serveru
+* `baseUrl` (string) - základní URL API bez lomítka na konci
+* `endpointUpload`, `endpointSubmit`, `endpointData` (string) - jednotlivé endpointy
+* `autoUpdates` (boolean) - pokud je TRUE, jsou po načtení aplikace stažena data a také jsou periodicky stahována v intervalu `updateInterval`
+* `updateInterval` (number) - interval v milisekundách, ve kterém jsou aktualizována data ze serveru. Má smysl pouze pokud `autoUpdates = true`
 * `appendDataImmediately` (boolean) - způsb aktualizace dat po odeslání formuláře
     * pokud je TRUE, data jsou po odeslání formuláře rovnou vloženy do storu. Vzhledem k tomu, že data z formuláře prošla validací, můžeme předpokládat, že můžeme data do tabulky zařadit. Tato možnost ovšem nezahrnuje situaci, pokud by došlo u odeslaných dat na serveru k nějakým změnám. Potom by byla data na frontendu v tabulce nekonzistentní s daty na serveru. Ovšem pouze po dodu několika vteřin do obnovení tabulky.
     * pokud je FALSE, po odeslání formuláře je zavolán GET na server a data se aktualizí přímo ze serveru
