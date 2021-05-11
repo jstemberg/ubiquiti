@@ -1,70 +1,32 @@
-# Getting Started with Create React App
+# Testovací aplikace Ubuquiti
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Nastavení aplikace
+Nastavení je k dispozici v souboru `src/settings.js`
+* `endpoint` (string) - základní URL API bez lomítka na konci
+* `updateInterval` (number) - interval v milisekundách, ve kterém je aktualizována data ze serveru
+* `appendDataImmediately` (boolean) - způsb aktualizace dat po odeslání formuláře
+    * pokud je TRUE, data jsou po odeslání formuláře rovnou vloženy do storu. Vzhledem k tomu, že data z formuláře prošla validací, můžeme předpokládat, že můžeme data do tabulky zařadit. Tato možnost ovšem nezahrnuje situaci, pokud by došlo u odeslaných dat na serveru k nějakým změnám. Potom by byla data na frontendu v tabulce nekonzistentní s daty na serveru. Ovšem pouze po dodu několika vteřin do obnovení tabulky.
+    * pokud je FALSE, po odeslání formuláře je zavolán GET na server a data se aktualizí přímo ze serveru
 
-## Available Scripts
+## Hlavní použité knihovny
+* Základní knihovny podle zadání `react`, `redux`, `redux-form`
+* `redux-thunk ` - doplněk pro Redux pro podporu asynchronních akcí
+* `reselect` - jednoduchá knihovna pro Redux umožňující snadné cachování selektorů
+* `@material-ui` - Grafická knihovna s prvky pro UI ve stylu material design
+* `axios` - provádění requestů na server. Zvažoval jsem zda nepoužít nativní Fetch API, ale nakonec jsem zvolil Axios z důvodu jednodušší implementace progress baru
+* `seamless-immutable` - Immutable knihovna, kterou využívám v Redux storu. Výhodou je, že se k těmto immutable objektům dá přistupovat stejně jako k nativním (samozřejmě nelze je měnit)
+* `lodash` - sada užitečných funkcí
+* `classnames` - umožňuje slučovat více CSS tříd
 
-In the project directory, you can run:
+## Validace dat
+* Formulář
+    * Zadávané hodnoty jsou validovány přes html atributy a následně JS ve validační funkci Redux-Form
+    * Formulář korektně pracuje s chybovými hláškami zaslanými ze serveru. Pokud je to možné, zobrazí chybovou hlášku přímo u daného pole.
+* Stažení dat ze serveru
+    * Po provedení GET requestu je provedena validace příchozích dat před vložením do storu
 
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Implementační poznámky
+* U tabulky by bylo v případě většího množství dat vhodné použít stránkování, ideláně nějaké DataTable řešení
+* Pokud by bylo na serveru velké množství dat, mělo by načítání probíhat s nějakým limitem a offsetem, aby se zbytečně nezatěžovala síť.
+* U záznamů na serveru by bylo vhodné držet časové značky uploadu a následně by si aplikace žádala pouze nové položky (změny), aby se zbytečně neposílala stále stejná data
+* Formulář by bylo vhodné nějakým způsobem zabezpečit - pokud by byl veřejně přístupný bez autentizace, dalo by se použít třeba alespoň podpesání tokenem
