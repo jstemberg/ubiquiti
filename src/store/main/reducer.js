@@ -56,7 +56,7 @@ export const getAllItems = (state) => {
  * @returns {Array.<Object>} Array of item object
  */
 export const getAllItemsSorted = createSelector(
-    [getAllItems], (items) => (_.sortBy(items, 'name'))
+    [getAllItems], (items) => (_.sortBy(items, o => o.name.toLowerCase()))
 );
 
 /**

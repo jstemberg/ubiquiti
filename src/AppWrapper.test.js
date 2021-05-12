@@ -17,6 +17,9 @@ const server = setupServer(
     rest.get('/data-empty', (req, res, ctx) => {
         return res(ctx.json([]))
     }),
+    rest.get('/data-network-error', (req, res, ctx) => {
+        return res.networkError('Failed to connect');
+    }),
     rest.post('/submit-correct', (req, res, ctx) => {
         return res(ctx.json({ uploadId: "2f58f7b5-3a04-4783-94ba-db34315823d7" }));
     }),
@@ -78,7 +81,6 @@ describe('Downloading data', () => {
         expect(screen.getByText('No data available')).toBeInTheDocument();
     });
     test('Network error while downloading', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         settings.endpointData = '/data-network-error';
         render(<AppWrapper />);
         fireEvent(document, new Event('downloadData'));

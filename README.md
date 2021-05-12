@@ -1,8 +1,9 @@
 # Testovací aplikace Ubuquiti
 
-## TODO
-- Nastavení správné URL
-- Správný port
+## Použití
+* Spuštění aplikace ve vývojovém režimu `$ npm start`
+* Spuštění testů v iteraktivním režimu `$ npm test`
+* Build aplikace `$ npm build`
 
 ## Nastavení aplikace
 Nastavení je k dispozici v souboru `src/settings.js`
