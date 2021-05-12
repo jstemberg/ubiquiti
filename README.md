@@ -10,9 +10,9 @@ Nastavení je k dispozici v souboru `src/settings.js`
 * `endpointSubmit`, `endpointUpload`, `endpointData` (string) - endpointy k jednotlivým requestům
 * `autoUpdates` (boolean) - pokud je TRUE, jsou po načtení aplikace stažena data a také jsou periodicky stahována v intervalu `updateInterval`
 * `updateInterval` (number) - interval v milisekundách, ve kterém jsou aktualizována data ze serveru. Má smysl pouze pokud `autoUpdates = true`
-* `appendDataImmediately` (boolean) - způsb aktualizace dat po odeslání formuláře
-    * pokud je TRUE, data jsou po odeslání formuláře rovnou vloženy do storu. Vzhledem k tomu, že data z formuláře prošla validací, můžeme předpokládat, že můžeme data do tabulky zařadit. Tato možnost ovšem nezahrnuje situaci, pokud by došlo u odeslaných dat na serveru k nějakým změnám. Potom by byla data na frontendu v tabulce nekonzistentní s daty na serveru. Ovšem pouze po dodu několika vteřin do obnovení tabulky.
-    * pokud je FALSE, po odeslání formuláře je zavolán GET na server a data se aktualizí přímo ze serveru
+* `appendDataImmediately` (boolean) - způsob aktualizace dat po odeslání formuláře
+    * pokud je TRUE, data jsou po odeslání formuláře rovnou vložena do storu. Vzhledem k tomu, že data z formuláře prošla validací, můžeme předpokládat, že je můžeme data do tabulky zařadit. Tato možnost by ovšem nebyla vhodná, pokud by došlo u odeslaných dat na serveru k nějakým změnám. Potom by byla data na frontendu v tabulce nekonzistentní s daty na serveru. Ovšem pouze po dobu několika vteřin do obnovení tabulky.
+    * pokud je FALSE, po odeslání formuláře je zavolán GET na server a data se aktualizují přímo ze serveru
 * `formValidationEnabled` (boolean) - pokud je TRUE, je zapnuta validace dat formuláře (vypínání využíváno při testech)
 
 ## Hlavní použité knihovny
@@ -35,10 +35,10 @@ Nastavení je k dispozici v souboru `src/settings.js`
     * Po provedení GET requestu je provedena validace příchozích dat před vložením do storu
 
 ## Implementační poznámky
-* U tabulky by bylo v případě většího množství dat vhodné použít stránkování, ideláně nějaké DataTable řešení
+* U tabulky by bylo v případě většího množství dat vhodné použít stránkování, ideálně nějaké DataTable řešení
 * Pokud by bylo na serveru velké množství dat, mělo by načítání probíhat s nějakým limitem a offsetem, aby se zbytečně nezatěžovala síť.
 * U záznamů na serveru by bylo vhodné držet časové značky uploadu a následně by si aplikace žádala pouze nové položky (změny), aby se zbytečně neposílala stále stejná data
-* Formulář by bylo vhodné nějakým způsobem zabezpečit - pokud by byl veřejně přístupný bez autentizace, dalo by se použít třeba alespoň podpesání tokenem
+* Formulář by bylo vhodné nějakým způsobem zabezpečit - pokud by byl veřejně přístupný bez autentizace, dalo by se použít třeba alespoň podepsání tokenem
 
 ## Testy
 Využívám end to end testy s mock API
