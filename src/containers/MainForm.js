@@ -4,6 +4,7 @@ import { renderTextField, renderFileField, SubmitButton } from '../components/Fo
 import { makeStyles } from '@material-ui/core/styles';
 import { capitalizeFirstLetter } from '../utils';
 import Alert from '@material-ui/lab/Alert';
+import * as settings from '../settings';
 
 const useMainFormStyles = makeStyles({
     root: {
@@ -22,28 +23,24 @@ const validate = (values, props) => {
         'file'
     ]
     requiredFields.forEach(field => {
-        if(!values[field]) {
-            errors[field] = capitalizeFirstLetter(field)+' is required';
+        if(settings.formValidationEnabled) {
+            if(!values[field]) {
+                errors[field] = capitalizeFirstLetter(field)+' is required';
+            }
+            if(values['name'] && values['name'].length > 100) {
+                errors['name'] = 'Maximum length is 100 characters';
+            }
+            if(values['height'] && parseInt(values['height']) > 500) {
+                errors['height'] = 'Maximum height is 500';
+            }
+            if(values['height'] && parseInt(values['height']) < 0) {
+                errors['height'] = 'Height must be larger than 0';
+            }
+            if(values['file'] && values['file']['size'] > 10*1024*1024) {
+                errors['file'] = 'Maximum size of file is 10 MB';
+            }
         }
-        if(values['name'] && values['name'].length > 100) {
-            errors['name'] = 'Maximum length is 100 characters';
-        }
-        if(values['height'] && parseInt(values['height']) > 500) {
-            errors['height'] = 'Maximum height is 500';
-        }
-        if(values['height'] && parseInt(values['height']) < 0) {
-            errors['height'] = 'Height must be larger than 0';
-        }
-        if(values['file'] && values['file']['size'] > 10*1024*1024) {
-            errors['file'] = 'Maximum size of file is 10 MB';
-        }
-
-        // if(values['file']) {
-        //     console.log(values['file']['size'], 10*1024*1024);
-        // }
     });
-    // console.log('Errors:');
-    // console.log(errors);
     return errors;
 }
 
@@ -60,10 +57,10 @@ const MainForm = props => {
                 id="form-name"
                 component={renderTextField}
                 type="text"
-                inputProps={{
+                inputProps={settings.formValidationEnabled ? {
                     minLength: 1,
                     maxLength: 100
-                }}
+                }:{}}
             />
             <Field
                 name="height"
@@ -71,10 +68,10 @@ const MainForm = props => {
                 id="form-height"
                 component={renderTextField}
                 type="number"
-                inputProps={{
+                inputProps={settings.formValidationEnabled ? {
                     min: 0,
                     max: 500
-                }}
+                }:{}}
             />
             <Field
                 name="file"
