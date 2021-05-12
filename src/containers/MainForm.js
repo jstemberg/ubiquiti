@@ -30,11 +30,14 @@ const validate = (values, props) => {
             if(values['name'] && values['name'].length > 100) {
                 errors['name'] = 'Maximum length is 100 characters';
             }
-            if(values['height'] && parseInt(values['height']) > 500) {
-                errors['height'] = 'Maximum height is 500';
-            }
-            if(values['height'] && parseInt(values['height']) < 0) {
-                errors['height'] = 'Height must be larger than 0';
+            if(values['height']) {
+                if(!values['height'].match(/^\d*$/)) {
+                    errors['height'] = 'Height must be integer';
+                } else if(parseInt(values['height']) > 500) {
+                    errors['height'] = 'Maximum height is 500';
+                } else if(parseInt(values['height']) < 0) {
+                    errors['height'] = 'Height must be larger than 0';
+                }
             }
             if(values['file'] && values['file']['size'] > 10*1024*1024) {
                 errors['file'] = 'Maximum size of file is 10 MB';
