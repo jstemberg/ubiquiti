@@ -1,6 +1,7 @@
 # Testovací aplikace Ubiquiti
 
 ## Použití
+* Instalace balíčků `$ npm install`
 * Spuštění aplikace ve vývojovém režimu `$ npm start`
 * Spuštění testů v iteraktivním režimu `$ npm test`
 * Build aplikace `$ npm build`
