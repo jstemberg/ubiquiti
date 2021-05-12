@@ -1,4 +1,4 @@
-# Testovací aplikace Ubuquiti
+# Testovací aplikace Ubiquiti
 
 ## Použití
 * Spuštění aplikace ve vývojovém režimu `$ npm start`
