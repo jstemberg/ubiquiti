@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import { SubmissionError, reset } from 'redux-form';
-import { Provider } from 'react-redux';
-import store from './store/store';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import grey from '@material-ui/core/colors/grey';
 import logo from './logo_simple.svg';
 import MainForm from './containers/MainForm';
 import DataTable from './containers/DataTable';
@@ -15,24 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import * as settings from './settings';
 import * as mainActions from './store/main/actions';
-
-
-const theme = createMuiTheme({
-    typography: {
-        useNextVariants: true,
-    },
-    palette: {
-        type: 'light',
-        primary: {
-            main: '#00a0df',
-            // light: '#ff6f60',
-            // dark: '#ab000d'
-        },
-        secondary: {
-            main: grey[100]
-        }
-    },
-});
 
 const useAppStyles = makeStyles(theme => ({
     app: {
@@ -230,43 +208,41 @@ function App(props) {
     };
 
     return (
-        <MuiThemeProvider theme={theme}>
-            <Provider store={store}>
-                <div className={classes.app}>
-                    <div className={classes.logoWrapper}>
-                        <img src={logo} className={classes.logo} alt="logo" />
-                    </div>
-                    <div className={classes.formWrapper}>
-                        <MainForm
-                            onSubmit={handleSubmit}
+        <>
+            <div className={classes.app}>
+                <div className={classes.logoWrapper}>
+                    <img src={logo} className={classes.logo} alt="logo" />
+                </div>
+                <div className={classes.formWrapper}>
+                    <MainForm
+                        onSubmit={handleSubmit}
+                    />
+                    <div className={classes.progressWrapper}>
+                    {uploading &&
+                        <>
+                        <div className={classes.progressLabel}>Uploading {Math.round(progressValue)} %</div>
+                        <LinearProgress
+                            classes={{ root: classes.progressRoot, bar: classes.progressBar }}
+                            value={progressValue}
+                            variant='determinate'
                         />
-                        <div className={classes.progressWrapper}>
-                        {uploading &&
-                            <>
-                            <div className={classes.progressLabel}>Uploading {Math.round(progressValue)} %</div>
-                            <LinearProgress
-                                classes={{ root: classes.progressRoot, bar: classes.progressBar }}
-                                value={progressValue}
-                                variant='determinate'
-                            />
-                            </>
-                        }
-                        </div>
-                    </div>
-                    <div className={classes.tableWrapper}>
-                        <DataTable downloadError={downloadError} />
+                        </>
+                    }
                     </div>
                 </div>
-                <Snackbar
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
-                    open={snackbarOpen}
-                    autoHideDuration={6000}
-                    onClose={handleCloseSnackbar}
-                >
-                    <Alert onClose={handleCloseSnackbar} severity="success">Form was submitted</Alert>
-                </Snackbar>
-            </Provider>
-        </MuiThemeProvider>
+                <div className={classes.tableWrapper}>
+                    <DataTable downloadError={downloadError} />
+                </div>
+            </div>
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+            >
+                <Alert onClose={handleCloseSnackbar} severity="success">Form was submitted</Alert>
+            </Snackbar>
+        </>
     );
 }
 

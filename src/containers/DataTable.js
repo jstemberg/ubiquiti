@@ -13,7 +13,6 @@ import * as mainSelectors from '../store/main/reducer';
 
 const useTableStyles = makeStyles(theme => ({
     root: {
-        // padding: 40,
         maxWidth: 800,
         margin: 'auto',
     },
